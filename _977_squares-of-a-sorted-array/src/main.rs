@@ -38,3 +38,7 @@ impl Solution {
     }
 }
 // @lc code=end
+
+fn main() {
+    Solution::sorted_squares(vec![-4, -1, 0, 3, 10]);
+}

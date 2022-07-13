@@ -17,3 +17,7 @@ impl Solution {
     }
 }
 // @lc code=end
+
+fn main() {
+    Solution::find_numbers(vec![12, 345, 2, 6, 7896]);
+}

@@ -27,3 +27,7 @@ impl Solution {
     }
 }
 // @lc code=end
+
+fn main() {
+    Solution::find_max_consecutive_ones(vec![1, 1, 0, 1, 1, 1]);
+}
