@@ -9,19 +9,14 @@ struct Solution {}
 // @lc code=start
 impl Solution {
     pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
-        let (mut left, mut right) = (0, nums.len());
-        loop {
-            if left == right || nums.len() == 0 {
-                break;
-            }
-            if nums[left] == val {
-                nums[left] = nums[right - 1];
-                right -= 1;
-            } else {
-                left += 1;
+        let mut i = 0;
+        for j in 0..nums.len() {
+            if nums[j] != val {
+                nums[i] = nums[j];
+                i += 1;
             }
         }
-        right as i32
+        i as i32
     }
 }
 // @lc code=end
