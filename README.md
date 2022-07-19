@@ -1,1 +1,2 @@
-# leetcode-records-of-rust
+# leetcode-records-by-rust
+🐒 recording my leecode answer by rust.
