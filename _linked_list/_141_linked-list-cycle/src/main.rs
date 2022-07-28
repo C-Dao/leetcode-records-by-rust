@@ -6,7 +6,7 @@
 
 // @lc code=start
 
-use std::{cell::RefCell, rc::Rc};
+use std::{cell::RefCell, collections::HashSet, rc::Rc};
 #[allow(dead_code)]
 struct ListNode {
     val: i32,
@@ -50,6 +50,24 @@ impl Solution {
         }
         true
     }
+
+    pub fn has_cycle_hash_map_edition(head: Option<Rc<RefCell<ListNode>>>) -> bool {
+        let mut set = HashSet::new();
+
+        let mut ptr = match head {
+            Some(ref node) => Rc::clone(node),
+            None => return false,
+        };
+
+        while set.insert(ptr.as_ptr()) {
+            let next = match ptr.borrow().next {
+                Some(ref node) => Rc::clone(node),
+                None => return false,
+            };
+            ptr = next;
+        }
+        true
+    }
 }
 // @lc code=end
 
@@ -62,14 +80,17 @@ fn main() {
     b.borrow_mut().next = Some(c.clone());
     c.borrow_mut().next = Some(d.clone());
     d.borrow_mut().next = Some(a.clone());
-    assert_eq!(Solution::has_cycle(Some(a)), true);
+    assert_eq!(Solution::has_cycle(Some(a.clone())), true);
+    assert_eq!(Solution::has_cycle_hash_map_edition(Some(a.clone())), true);
 
     let a = Rc::new(RefCell::new(ListNode::new(1)));
     let b = Rc::new(RefCell::new(ListNode::new(2)));
     a.borrow_mut().next = Some(b.clone());
     b.borrow_mut().next = Some(a.clone());
-    assert_eq!(Solution::has_cycle(Some(a)), true);
+    assert_eq!(Solution::has_cycle(Some(a.clone())), true);
+    assert_eq!(Solution::has_cycle_hash_map_edition(Some(a.clone())), true);
 
     let a = Rc::new(RefCell::new(ListNode::new(1)));
-    assert_eq!(Solution::has_cycle(Some(a)), false);
+    assert_eq!(Solution::has_cycle(Some(a.clone())), false);
+    assert_eq!(Solution::has_cycle_hash_map_edition(Some(a.clone())), false);
 }
