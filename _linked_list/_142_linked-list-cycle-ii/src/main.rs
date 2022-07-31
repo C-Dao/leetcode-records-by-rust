@@ -91,7 +91,7 @@ impl Solution {
             ptr = next;
         }
 
-        Some(ptr.clone())
+        Some(ptr)
     }
 }
 // @lc code=end
