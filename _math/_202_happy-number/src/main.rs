@@ -11,12 +11,12 @@ struct Solution {}
 impl Solution {
     pub fn is_happy(mut n: i32) -> bool {
         let mut slow = n;
-        let mut fast = Solution::get_next(n);
+        let mut fast = Self::get_next(n);
 
         while slow != fast && fast != 1 {
-            slow = Solution::get_next(slow);
+            slow = Self::get_next(slow);
             for i in 0..2 {
-                fast = Solution::get_next(fast);
+                fast = Self::get_next(fast);
             }
         }
         fast == 1
@@ -25,7 +25,7 @@ impl Solution {
     pub fn is_happy_by_hash_set(mut n: i32) -> bool {
         let mut set = HashSet::new();
         while n != 1 && set.insert(n) {
-            n = Solution::get_next(n);
+            n = Self::get_next(n);
         }
         n == 1
     }

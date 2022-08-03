@@ -13,7 +13,7 @@ impl Solution {
         let mut mask = vec![false; nums.len()];
         let mut scratch = vec![0; nums.len()];
 
-        Solution::backtrack(&nums, &mut mask, &mut scratch, &mut result, 0);
+        Self::backtrack(&nums, &mut mask, &mut scratch, &mut result, 0);
         result
     }
 
@@ -32,7 +32,7 @@ impl Solution {
                 if !mask[i] && !used.iter().any(|x| *x == nums[i]) {
                     scratch[k] = nums[i];
                     mask[i] = true;
-                    Solution::backtrack(nums, mask, scratch, result, k + 1);
+                    Self::backtrack(nums, mask, scratch, result, k + 1);
                     used.push(nums[i]);
                     mask[i] = false;
                 }

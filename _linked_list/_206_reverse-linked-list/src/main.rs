@@ -23,7 +23,17 @@ impl ListNode {
 // @lc code=start
 
 impl Solution {
-    pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {}
+    pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+        let (mut prev, mut cur) = (None, head);
+
+        while let Some(mut temp) = cur {
+            cur = temp.next;
+            temp.next = prev;
+            prev = Some(temp);
+        }
+
+        prev
+    }
 }
 // @lc code=end
 
