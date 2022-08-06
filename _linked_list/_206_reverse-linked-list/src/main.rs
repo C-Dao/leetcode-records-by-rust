@@ -38,5 +38,25 @@ impl Solution {
 // @lc code=end
 
 fn main() {
-    println!("Hello, world!");
+    let mut a = Box::new(ListNode::new(1));
+    let mut b = Box::new(ListNode::new(2));
+    let mut c = Box::new(ListNode::new(3));
+    let mut d = Box::new(ListNode::new(4));
+    let e = Box::new(ListNode::new(5));
+
+    d.next = Some(e);
+    c.next = Some(d);
+    b.next = Some(c);
+    a.next = Some(b);
+
+    println!("{:?}", Solution::reverse_list(Some(a)));
+
+    let mut a = Box::new(ListNode::new(1));
+    let b = Box::new(ListNode::new(2));
+
+    a.next = Some(b);
+
+    println!("{:?}", Solution::reverse_list(Some(a)));
+
+    println!("{:?}", Solution::reverse_list(None));
 }

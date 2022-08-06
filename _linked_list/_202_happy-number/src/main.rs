@@ -9,13 +9,13 @@ struct Solution {}
 
 // @lc code=start
 impl Solution {
-    pub fn is_happy(mut n: i32) -> bool {
+    pub fn is_happy(n: i32) -> bool {
         let mut slow = n;
         let mut fast = Self::get_next(n);
 
         while slow != fast && fast != 1 {
             slow = Self::get_next(slow);
-            for i in 0..2 {
+            for _ in 0..2 {
                 fast = Self::get_next(fast);
             }
         }
@@ -44,5 +44,8 @@ impl Solution {
 // @lc code=end
 
 fn main() {
-    println!("Hello, world!");
+    assert_eq!(Solution::is_happy(19), true);
+    assert_eq!(Solution::is_happy(2), false);
+    assert_eq!(Solution::is_happy_by_hash_set(19), true);
+    assert_eq!(Solution::is_happy_by_hash_set(2), false);
 }
