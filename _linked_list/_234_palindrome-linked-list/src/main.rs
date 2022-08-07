@@ -22,42 +22,45 @@ struct Solution {}
 
 // @lc code=start
 
+pub struct ListIter<'a> {
+    node: &'a Option<Box<ListNode>>,
+}
+
+impl<'a> Iterator for ListIter<'a> {
+    type Item = i32;
+    fn next(&mut self) -> Option<i32> {
+        let val = self.node.as_ref()?.val;
+        self.node = &self.node.as_ref()?.next;
+        Some(val)
+    }
+}
+
 impl Solution {
-    pub fn is_palindrome(mut head: Option<Box<ListNode>>) -> bool {
-        if head.is_none() {
-            return true;
-        }
-
-        let mut rev: Option<Box<ListNode>> = None;
-        let mut _nxt: Option<Box<ListNode>> = None;
-
-        // half to half
-        while head.is_some() {
-            if rev == head || rev == head.as_ref().unwrap().next {
-                return true;
-            }
-
-            _nxt = head.as_mut().unwrap().next.take();
-            head.as_mut().unwrap().next = rev;
-            rev = head;
-            head = _nxt;
-        }
-
-        false
+    pub fn is_palindrome(head: Option<Box<ListNode>>) -> bool {
+        let _iter = ListIter { node: &head };
+        let vals: Vec<i32> = _iter.collect();
+        vals.iter().rev().eq(vals.iter())
     }
+
     pub fn is_palindrome_by_backtrack(head: Option<Box<ListNode>>) -> bool {
-        let mut cur = head.clone();
-        return Self::backtrace_check(head.as_ref(), cur.as_mut().unwrap());
+        let mut dummy_cur = Box::new(ListNode {
+            val: -1,
+            next: head.clone(),
+        });
+        return Self::backtrace_check(head.as_ref(), &mut dummy_cur);
     }
 
-    fn backtrace_check(head: Option<&Box<ListNode>>, &mut cur: &mut Box<ListNode>) -> bool {
+    fn backtrace_check(head: Option<&Box<ListNode>>, dummy_cur: &mut Box<ListNode>) -> bool {
         if head.is_none() {
             return true;
         }
-        let check_bool = Self::backtrace_check(head.unwrap().next.as_ref(), &mut cur)
-            && (cur.val == head.unwrap().val);
-        cur = cur.next.as_mut().unwrap();
-        check_bool
+        let checked = if Self::backtrace_check(head.unwrap().next.as_ref(), dummy_cur) {
+            dummy_cur.next.as_ref().unwrap().val == head.unwrap().val
+        } else {
+            false
+        };
+        dummy_cur.next = dummy_cur.next.take().unwrap().next;
+        checked
     }
 }
 // @lc code=end
@@ -66,11 +69,12 @@ fn main() {
     let mut a = Box::new(ListNode::new(1));
     let mut b = Box::new(ListNode::new(2));
     let mut c = Box::new(ListNode::new(2));
-    let mut d = Box::new(ListNode::new(1));
+    let d = Box::new(ListNode::new(1));
 
     c.next = Some(d);
     b.next = Some(c);
     a.next = Some(b);
 
-    assert_eq!(Solution::is_palindrome_by_backtrack(Some(a)), true);
+    assert_eq!(Solution::is_palindrome_by_backtrack(Some(a.clone())), true);
+    assert_eq!(Solution::is_palindrome(Some(a.clone())), true);
 }

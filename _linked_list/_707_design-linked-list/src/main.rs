@@ -5,7 +5,7 @@
  */
 
 // @lc code=start
-
+use std::{cell::RefCell, rc::Rc};
 #[derive(Debug, Clone)]
 struct Node {
     val: i32,
@@ -44,6 +44,122 @@ impl MyLinkedList {
 
     fn add_at_head(&mut self, val: i32) {
         self.head = Some(Box::new(Node {
+            val,
+            next: self.head.take(),
+        }))
+    }
+
+    fn add_at_tail(&mut self, val: i32) {
+        let mut cur: &mut Box<Node> = match self.head {
+            Some(ref mut head) => head,
+            None => {
+                self.head = Some(Box::new(Node { val, next: None }));
+                return;
+            }
+        };
+
+        while let Some(ref mut next) = cur.next {
+            cur = next;
+        }
+
+        cur.next = Some(Box::new(Node { val, next: None }));
+        return;
+    }
+
+    fn add_at_index(&mut self, index: i32, val: i32) {
+        if index == 0 {
+            self.head = Some(Box::new(Node {
+                val,
+                next: self.head.take(),
+            }));
+            return;
+        }
+
+        let mut cur: &mut Box<Node> = match self.head {
+            Some(ref mut head) => head,
+            None => return,
+        };
+
+        for _ in 0..(index - 1) {
+            if let Some(ref mut next) = cur.next {
+                cur = next;
+            } else {
+                return;
+            };
+        }
+        cur.next = Some(Box::new(Node {
+            val,
+            next: cur.next.take(),
+        }));
+    }
+
+    fn delete_at_index(&mut self, index: i32) {
+        if index == 0 {
+            self.head = self.head.take().and_then(|head| head.next);
+            return;
+        }
+        let mut cur: &mut Box<Node> = match self.head {
+            Some(ref mut head) => head,
+            None => return,
+        };
+
+        for _ in 0..(index - 1) {
+            if let Some(ref mut next) = cur.next {
+                cur = next;
+            } else {
+                return;
+            };
+        }
+        cur.next = cur.next.take().and_then(|next| next.next);
+    }
+}
+
+struct DoublyNode {
+    val: i32,
+    next: Option<Rc<RefCell<DoublyNode>>>,
+    pre: Option<Rc<RefCell<DoublyNode>>>,
+}
+
+impl DoublyNode {
+    fn new(val: i32) -> Self {
+        DoublyNode {
+            val,
+            next: None,
+            pre: None,
+        }
+    }
+}
+
+struct MyDoublyLinkedList {
+    head: Option<Rc<RefCell<DoublyNode>>>,
+}
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl MyDoublyLinkedList {
+    fn new() -> Self {
+        MyDoublyLinkedList { head: None }
+    }
+
+    fn get(&self, index: i32) -> i32 {
+        let mut cur = match self.head {
+            Some(ref head) => head,
+            None => return -1,
+        };
+
+        for _ in 0..index {
+            if let Some(ref next) = cur.borrow().next {
+                cur = next;
+            } else {
+                return -1;
+            };
+        }
+        cur.borrow().val
+    }
+
+    fn add_at_head(&mut self, val: i32) {
+        self.head = Some(Rc::new(RefCell::new( DoublyNode {
             val,
             next: self.head.take(),
         }))
