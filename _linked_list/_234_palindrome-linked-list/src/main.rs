@@ -38,28 +38,27 @@ impl<'a> Iterator for ListIter<'a> {
 impl Solution {
     pub fn is_palindrome(head: Option<Box<ListNode>>) -> bool {
         let _iter = ListIter { node: &head };
-        let vals: Vec<i32> = _iter.collect();
-        vals.iter().rev().eq(vals.iter())
+        let val_vec: Vec<i32> = _iter.collect();
+        val_vec.iter().rev().eq(val_vec.iter())
     }
 
     pub fn is_palindrome_by_backtrack(head: Option<Box<ListNode>>) -> bool {
-        let mut dummy_cur = Box::new(ListNode {
-            val: -1,
-            next: head.clone(),
-        });
+        let mut dummy_cur = head.as_ref().unwrap();
         return Self::backtrace_check(head.as_ref(), &mut dummy_cur);
     }
 
-    fn backtrace_check(head: Option<&Box<ListNode>>, dummy_cur: &mut Box<ListNode>) -> bool {
+    fn backtrace_check(head: Option<&Box<ListNode>>, dummy_cur: &mut &Box<ListNode>) -> bool {
         if head.is_none() {
             return true;
         }
         let checked = if Self::backtrace_check(head.unwrap().next.as_ref(), dummy_cur) {
-            dummy_cur.next.as_ref().unwrap().val == head.unwrap().val
+            dummy_cur.val == head.unwrap().val
         } else {
             false
         };
-        dummy_cur.next = dummy_cur.next.take().unwrap().next;
+        if dummy_cur.next.is_some() {
+            *dummy_cur = dummy_cur.next.as_ref().unwrap();
+        }
         checked
     }
 }
