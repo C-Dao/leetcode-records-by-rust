@@ -4,25 +4,21 @@
  * [61] Rotate List
  */
 
-
- struct Solution{}
+struct Solution {}
 
 // Definition for singly-linked list.
- #[derive(PartialEq, Eq, Clone, Debug)]
- pub struct ListNode {
-   pub val: i32,
-   pub next: Option<Box<ListNode>>
- }
- 
- impl ListNode {
-   #[inline]
-   fn new(val: i32) -> Self {
-     ListNode {
-       next: None,
-       val
-     }
-   }
- }
+#[derive(PartialEq, Eq, Clone, Debug)]
+pub struct ListNode {
+    pub val: i32,
+    pub next: Option<Box<ListNode>>,
+}
+
+impl ListNode {
+    #[inline]
+    fn new(val: i32) -> Self {
+        ListNode { next: None, val }
+    }
+}
 
 // @lc code=start
 
@@ -38,36 +34,33 @@ impl Solution {
         if len == 0 {
             return None;
         }
- 
+
         let k = k.rem_euclid(len as i32);
 
         if k == 0 {
             return head;
         }
 
-
         let mut old_head = head.take().unwrap();
 
-
         let mut node = old_head.as_mut();
-       
-        for _ in 0..len-k-1 {
+
+        for _ in 0..len - k - 1 {
             node = node.next.as_mut().unwrap();
         }
 
         let mut new_head = node.next.take().unwrap();
         let mut new_tail = new_head.as_mut();
 
-        for _ in 0..k-1 {
+        for _ in 0..k - 1 {
             new_tail = new_tail.next.as_mut().unwrap();
         }
 
         new_tail.next = Some(old_head);
-        Some(new_head) 
+        Some(new_head)
     }
 }
 // @lc code=end
-
 
 fn main() {
     let mut a = Box::new(ListNode::new(1));
@@ -81,5 +74,5 @@ fn main() {
     b.next = Some(c);
     a.next = Some(b);
 
-    println!("{:?}", Solution::rotate_right(Some(a),2));
+    println!("{:?}", Solution::rotate_right(Some(a), 2));
 }
