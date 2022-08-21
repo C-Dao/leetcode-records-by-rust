@@ -1,7 +1,7 @@
 /*
  * @lc app=leetcode id=430 lang=rust
  *
- * [430] Flatten a multilevel doubly linked list
+ * [430] Flatten A Multilevel Doubly Linked List
  */
 
 use std::fmt::{Debug, Error, Formatter};

@@ -41,9 +41,7 @@ impl Solution {
             return head;
         }
 
-        let mut old_head = head.take().unwrap();
-
-        let mut node = old_head.as_mut();
+        let mut node = head.as_mut().unwrap();
 
         for _ in 0..len - k - 1 {
             node = node.next.as_mut().unwrap();
@@ -56,7 +54,7 @@ impl Solution {
             new_tail = new_tail.next.as_mut().unwrap();
         }
 
-        new_tail.next = Some(old_head);
+        new_tail.next = head;
         Some(new_head)
     }
 }
