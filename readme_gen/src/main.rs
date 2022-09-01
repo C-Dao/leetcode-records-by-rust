@@ -31,7 +31,7 @@ fn main() -> io::Result<()> {
     md.add_table_headers(vec!["groups", "questions"]);
     for (group, mut questions) in hash_map.into_iter() {
         let group_cell = md_link_gen(
-            group.to_str().unwrap().get(2..).unwrap(),
+            group.to_str().unwrap().get(3..).unwrap(),
             group.to_str().unwrap().get(2..).unwrap(),
         );
         let mut questions_cell = vec![];
