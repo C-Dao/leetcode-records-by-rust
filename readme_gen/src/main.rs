@@ -26,9 +26,7 @@ fn main() -> io::Result<()> {
 
     let mut md = Markdown::new("README.md");
 
-    md.add_main_heading("leetcode-records-by-rust");
-    md.add_text("🐒 recording leetcode answer by rust for me.");
-    md.add_table_headers(vec!["groups", "questions"]);
+    let mut table_rows = vec![];
     for (group, mut questions) in hash_map.into_iter() {
         let group_cell = md_link_gen(
             group.to_str().unwrap().get(3..).unwrap(),
@@ -71,7 +69,17 @@ fn main() -> io::Result<()> {
                 question.to_str().unwrap().get(2..).unwrap(),
             ));
         }
-        md.add_table_row(vec![&group_cell, &questions_cell.join(", ")]);
+        table_rows.push(vec![group_cell, questions_cell.join(", ")]);
     }
+    table_rows.sort_by(|row_a, row_b| row_a[0].cmp(&row_b[0]));
+
+    md.add_main_heading("leetcode-records-by-rust");
+    md.add_text("🐒 recording leetcode answer by rust for me.");
+    md.add_table_headers(vec!["groups", "questions"]);
+    
+    table_rows
+        .iter()
+        .for_each(|row| md.add_table_row(row.iter().map(|cell| cell.as_str()).collect()));
+
     md.write()
 }
