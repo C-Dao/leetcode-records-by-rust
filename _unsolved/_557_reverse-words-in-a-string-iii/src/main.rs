@@ -4,6 +4,8 @@
  * [557] Reverse Words in a String III
  */
 
+ struct Solution {}
+
 // @lc code=start
 impl Solution {
     pub fn reverse_words(s: String) -> String {
@@ -12,3 +14,7 @@ impl Solution {
 }
 // @lc code=end
 
+
+fn main() {
+    println!("Hello, world!");
+}

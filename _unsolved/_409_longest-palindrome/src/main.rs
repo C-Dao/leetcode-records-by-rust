@@ -3,7 +3,7 @@
  *
  * [409] Longest Palindrome
  */
-
+struct Solution{}
 // @lc code=start
 impl Solution {
     pub fn longest_palindrome(s: String) -> i32 {
@@ -12,3 +12,7 @@ impl Solution {
 }
 // @lc code=end
 
+
+fn main() {
+    println!("Hello, world!");
+}
