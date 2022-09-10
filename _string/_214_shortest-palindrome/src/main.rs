@@ -2,6 +2,39 @@
  * @lc app=leetcode id=214 lang=rust
  *
  * [214] Shortest Palindrome
+ *
+ * https://leetcode.com/problems/shortest-palindrome/description/
+ *
+ * algorithms
+ * Hard (31.93%)
+ * Likes:    2715
+ * Dislikes: 197
+ * Total Accepted:    143.6K
+ * Total Submissions: 448.2K
+ * Testcase Example:  '"aacecaaa"'
+ *
+ * You are given a string s. You can convert s to a palindrome by adding
+ * characters in front of it.
+ * 
+ * Return the shortest palindrome you can find by performing this
+ * transformation.
+ * 
+ * 
+ * Example 1:
+ * Input: s = "aacecaaa"
+ * Output: "aaacecaaa"
+ * Example 2:
+ * Input: s = "abcd"
+ * Output: "dcbabcd"
+ * 
+ * 
+ * Constraints:
+ * 
+ * 
+ * 0 <= s.length <= 5 * 10^4
+ * s consists of lowercase English letters only.
+ * 
+ * 
  */
 
 struct Solution {}
