@@ -41,10 +41,17 @@ struct Solution {}
 
 // @lc code=start
 impl Solution {
-    pub fn reverse_string(s: &mut Vec<char>) {}
+    pub fn reverse_string(s: &mut Vec<char>) {
+        let len = s.len();
+        for l in 0..len / 2 {
+            s.swap(l, len - l - 1);
+        }
+    }
 }
 // @lc code=end
 
 fn main() {
-    println!("Hello, world!");
+    let mut s = "hello".chars().collect();
+    Solution::reverse_string(&mut s);
+    println!("{:?}", s);
 }
