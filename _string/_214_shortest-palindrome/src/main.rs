@@ -42,16 +42,16 @@ struct Solution {}
 // @lc code=start
 impl Solution {
     pub fn shortest_palindrome(s: String) -> String {
-        let sb = s.as_bytes();
-        let len = sb.len();
+        let s_bytes = s.as_bytes();
+        let len = s_bytes.len();
         let next_vec = Self::kmp_next_vec(&s);
 
         let mut k = 0;
         for i in (0..len).rev() {
-            while k > 0 && sb[i] != sb[k] {
+            while k > 0 && s_bytes[i] != s_bytes[k] {
                 k = next_vec[k - 1];
             }
-            if sb[k] == sb[i] {
+            if s_bytes[k] == s_bytes[i] {
                 k += 1;
             }
         }
@@ -59,7 +59,7 @@ impl Solution {
         if k == len {
             s
         } else {
-            sb[k..]
+            s_bytes[k..]
                 .iter()
                 .rev()
                 .map(|b| (*b) as char)
@@ -68,16 +68,16 @@ impl Solution {
         }
     }
 
-    fn kmp_next_vec(str: &String) -> Vec<usize> {
-        let strb = str.as_bytes();
-        let len = str.as_bytes().len();
+    fn kmp_next_vec(pattern: &String) -> Vec<usize> {
+        let pattern_bytes = pattern.as_bytes();
+        let len = pattern.as_bytes().len();
         let mut next = vec![0; len];
         for i in 1..len {
             let mut t = next[i - 1];
-            while t > 0 && strb[i] != strb[t] {
+            while t > 0 && pattern_bytes[i] != pattern_bytes[t] {
                 t = next[t - 1];
             }
-            if strb[t] == strb[i] {
+            if pattern_bytes[t] == pattern_bytes[i] {
                next[i] = t + 1;
             }
         }

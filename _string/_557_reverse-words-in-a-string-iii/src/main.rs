@@ -37,15 +37,18 @@
  * 
  */
 
+ struct Solution {}
+
 // @lc code=start
 impl Solution {
     pub fn reverse_words(s: String) -> String {
-        
+        s.split_whitespace().map(|p| { p.chars().rev().collect::<String>() + &" " }).collect::<String>().trim().to_string()
     }
 }
 // @lc code=end
 
 
 fn main() {
-    println!("Hello, world!");
+    assert_eq!(Solution::reverse_words("Let's take LeetCode contest".to_string()), "s'teL ekat edoCteeL tsetnoc"
+);
 }

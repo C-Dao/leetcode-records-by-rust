@@ -61,8 +61,8 @@ impl Solution {
         }
         let next_vec = Self::kmp_next_vec(&needle);
 
-        let (mut i, mut j) = (0, 0);
-        while i < haystack.chars().count() {
+        let  mut j = 0;
+        for i in 0..haystack.chars().count() {
             while j > 0 && haystack.chars().nth(i).unwrap() != needle.chars().nth(j).unwrap() {
                 j = next_vec[j - 1];
             }
@@ -72,7 +72,6 @@ impl Solution {
             if j == needle.chars().count() {
                 return i as i32 - needle.chars().count() as i32 + 1;
             }
-            i += 1;
         }
         return -1;
     }
