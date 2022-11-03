@@ -15,10 +15,10 @@
  *
  * Implement the myAtoi(string s) function, which converts a string to a 32-bit
  * signed integer (similar to C/C++'s atoi function).
- * 
+ *
  * The algorithm for myAtoi(string s) is as follows:
- * 
- * 
+ *
+ *
  * Read in and ignore any leading whitespace.
  * Check if the next character (if not already at the end of the string) is '-'
  * or '+'. Read this character in if it is either. This determines if the final
@@ -34,20 +34,20 @@
  * integers less than -2^31 should be clamped to -2^31, and integers greater
  * than 2^31 - 1 should be clamped to 2^31 - 1.
  * Return the integer as the final result.
- * 
- * 
+ *
+ *
  * Note:
- * 
- * 
+ *
+ *
  * Only the space character ' ' is considered a whitespace character.
  * Do not ignore any characters other than the leading whitespace or the rest
  * of the string after the digits.
- * 
- * 
- * 
+ *
+ *
+ *
  * Example 1:
- * 
- * 
+ *
+ *
  * Input: s = "42"
  * Output: 42
  * Explanation: The underlined characters are what is read in, the caret is the
@@ -60,11 +60,11 @@
  * ⁠          ^
  * The parsed integer is 42.
  * Since 42 is in the range [-2^31, 2^31 - 1], the final result is 42.
- * 
- * 
+ *
+ *
  * Example 2:
- * 
- * 
+ *
+ *
  * Input: s = "   -42"
  * Output: -42
  * Explanation:
@@ -76,11 +76,11 @@
  * ⁠              ^
  * The parsed integer is -42.
  * Since -42 is in the range [-2^31, 2^31 - 1], the final result is -42.
- * 
- * 
+ *
+ *
  * Example 3:
- * 
- * 
+ *
+ *
  * Input: s = "4193 with words"
  * Output: 4193
  * Explanation:
@@ -95,24 +95,74 @@
  * ⁠            ^
  * The parsed integer is 4193.
  * Since 4193 is in the range [-2^31, 2^31 - 1], the final result is 4193.
- * 
- * 
- * 
+ *
+ *
+ *
  * Constraints:
- * 
- * 
+ *
+ *
  * 0 <= s.length <= 200
  * s consists of English letters (lower-case and upper-case), digits (0-9), '
  * ', '+', '-', and '.'.
- * 
- * 
+ *
+ *
  */
+
+struct Solution {}
 
 // @lc code=start
 impl Solution {
     pub fn my_atoi(s: String) -> i32 {
-        
+        let s_bytes = s.as_bytes();
+        let mut ans: i32 = 0;
+        let mut sign: i32 = 1;
+        let mut idx: usize = 0;
+
+        while idx < s_bytes.len() && s_bytes[idx] == ' ' as u8 {
+            idx += 1;
+        }
+
+        if idx == s_bytes.len() {
+            return 0;
+        };
+
+        if s_bytes[idx] == '-' as u8 {
+            sign = -1;
+            idx += 1;
+        } else if s_bytes[idx] == '+' as u8 {
+            sign = 1;
+            idx += 1;
+        };
+
+        while idx < s_bytes.len() && s_bytes[idx] <= '9' as u8 && s_bytes[idx] >= '0' as u8 {
+            {
+                let digit = sign * (s_bytes[idx] - '0' as u8) as i32;
+
+                if sign == 1
+                    && (ans > i32::MAX / 10 || ans == i32::MAX / 10 && digit > i32::MAX % 10)
+                {
+                    return i32::MAX;
+                } else if sign == -1
+                    && (ans < i32::MIN / 10 || ans == i32::MIN / 10 && digit < i32::MIN % 10)
+                {
+                    return i32::MIN;
+                };
+
+                ans = ans * 10 + digit;
+                idx += 1;
+            }
+        }
+
+        ans
     }
 }
 // @lc code=end
 
+fn main() {
+    assert_eq!(Solution::my_atoi("   -22".to_string()), -22);
+    assert_eq!(Solution::my_atoi("   +22wdwdqw".to_string()), 22);
+    assert_eq!(Solution::my_atoi("   -22   ".to_string()), -22);
+    assert_eq!(Solution::my_atoi("   +22   ".to_string()), 22);
+    assert_eq!(Solution::my_atoi("2147483646".to_string()), 2147483646);
+    assert_eq!(Solution::my_atoi("".to_string()), 0);
+}
