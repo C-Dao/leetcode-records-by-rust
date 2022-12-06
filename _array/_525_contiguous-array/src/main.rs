@@ -48,9 +48,28 @@
 struct Solution {}
 
 // @lc code=start
+use std::collections::HashMap;
+
 impl Solution {
     pub fn find_max_length(nums: Vec<i32>) -> i32 {
-        
+        let mut hash_map: HashMap<i32, i32> = HashMap::new();
+
+        hash_map.insert(0, -1);
+
+        let mut sum: i32 = 0;
+        let mut max_length: i32 = 0;
+
+        for i in 0..nums.len() {
+            sum += if nums[i] == 0 { -1 } else { 1 };
+
+            if hash_map.contains_key(&sum) {
+                max_length = i32::max(max_length, i as i32 - hash_map.get(&sum).unwrap())
+            } else {
+                hash_map.insert(sum, i as i32);
+            }
+        }
+
+        max_length
     }
 }
 // @lc code=end
