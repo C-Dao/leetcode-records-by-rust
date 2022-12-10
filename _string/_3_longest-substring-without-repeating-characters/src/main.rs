@@ -60,11 +60,10 @@ struct Solution {}
 impl Solution {
     pub fn length_of_longest_substring(s: String) -> i32 {
         let mut vec_set = vec![0; 256];
-        let s_bytes = s.as_bytes();
-        let s_len = s.len();
-        let (mut rp, mut max) = (0, 0);
+        let (s_len, s_bytes) = (s.len(), s.as_bytes());
+        let (mut lp, mut rp, mut max) = (0, 0, 0);
 
-        for lp in 0..s_len {
+        while lp < s_len {
             if lp != 0 {
                 vec_set[(s_bytes[lp - 1] - b'a') as usize] = 0;
             };
@@ -73,6 +72,8 @@ impl Solution {
                 rp += 1;
             }
             max = usize::max(max, rp - lp);
+
+            lp += 1;
         }
 
         max as i32
@@ -81,5 +82,8 @@ impl Solution {
 // @lc code=end
 
 fn main() {
-    assert_eq!(Solution::length_of_longest_substring("abcabcbb".to_string()), 3);
+    assert_eq!(
+        Solution::length_of_longest_substring("abcabcbb".to_string()),
+        3
+    );
 }
