@@ -15,54 +15,54 @@
  *
  * Given the head of a linked list, return the node where the cycle begins. If
  * there is no cycle, return null.
- * 
+ *
  * There is a cycle in a linked list if there is some node in the list that can
  * be reached again by continuously following the next pointer. Internally, pos
  * is used to denote the index of the node that tail's next pointer is
  * connected to (0-indexed). It is -1 if there is no cycle. Note that pos is
  * not passed as a parameter.
- * 
+ *
  * Do not modify the linked list.
- * 
- * 
+ *
+ *
  * Example 1:
- * 
- * 
+ *
+ *
  * Input: head = [3,2,0,-4], pos = 1
  * Output: tail connects to node index 1
  * Explanation: There is a cycle in the linked list, where tail connects to the
  * second node.
- * 
- * 
+ *
+ *
  * Example 2:
- * 
- * 
+ *
+ *
  * Input: head = [1,2], pos = 0
  * Output: tail connects to node index 0
  * Explanation: There is a cycle in the linked list, where tail connects to the
  * first node.
- * 
- * 
+ *
+ *
  * Example 3:
- * 
- * 
+ *
+ *
  * Input: head = [1], pos = -1
  * Output: no cycle
  * Explanation: There is no cycle in the linked list.
- * 
- * 
- * 
+ *
+ *
+ *
  * Constraints:
- * 
- * 
+ *
+ *
  * The number of the nodes in the list is in the range [0, 10^4].
  * -10^5 <= Node.val <= 10^5
  * pos is -1 or a valid index in the linked-list.
- * 
- * 
- * 
+ *
+ *
+ *
  * Follow up: Can you solve it using O(1) (i.e. constant) memory?
- * 
+ *
  */
 
 // @lc code=start
@@ -86,48 +86,57 @@ struct Solution {}
 // @lc code=start
 impl Solution {
     pub fn detect_cycle(head: Option<Rc<RefCell<ListNode>>>) -> Option<Rc<RefCell<ListNode>>> {
-        let mut slow = match head {
-            Some(ref node) => Rc::clone(node),
-            None => return None,
+        if head.is_none() || head.as_ref().unwrap().borrow().next.is_none() {
+            return None;
         };
+
+        let mut slow = head.clone().map(|ref node| node.clone());
         let mut fast = slow.clone();
 
-        while fast.borrow().next.is_some() {
-            let next = match slow.borrow().next {
-                Some(ref node) => Rc::clone(node),
-                None => return None,
-            };
+        while fast.is_some() && slow.is_some() {
+            let next = slow
+                .unwrap()
+                .borrow()
+                .next
+                .clone()
+                .map_or(None, |ref node| Some(node.clone()));
+
             slow = next;
 
             for _ in 0..2 {
-                let next = match fast.borrow().next {
-                    Some(ref node) => Rc::clone(node),
-                    None => return None,
-                };
+                let next = fast
+                    .unwrap()
+                    .borrow()
+                    .next
+                    .clone()
+                    .map_or(None, |ref node| Some(node.clone()));
                 fast = next;
             }
 
-            if fast.as_ptr() == slow.as_ptr() {
-                let mut ptr = match head {
-                    Some(ref node) => Rc::clone(node),
-                    None => return None,
-                };
+            if fast.as_ref().unwrap().as_ptr() == slow.as_ref().unwrap().as_ptr() {
+                let mut ptr = head.clone().map(|ref node| node.clone());
 
                 loop {
-                    if ptr.as_ptr() == slow.as_ptr() {
-                        return Some(ptr.clone());
-                    }
-
-                    let next = match ptr.borrow().next {
-                        Some(ref node) => Rc::clone(node),
-                        None => return None,
+                    if ptr.as_ref().unwrap().as_ptr() == slow.as_ref().unwrap().as_ptr() {
+                        return Some(ptr.unwrap().clone());
                     };
+
+                    let next = ptr
+                        .unwrap()
+                        .borrow()
+                        .next
+                        .clone()
+                        .map(|ref node| node.clone());
+
                     ptr = next;
 
-                    let next = match slow.borrow().next {
-                        Some(ref node) => Rc::clone(node),
-                        None => return None,
-                    };
+                    let next = slow
+                        .unwrap()
+                        .borrow()
+                        .next
+                        .clone()
+                        .map(|ref node| node.clone());
+
                     slow = next;
                 }
             }
