@@ -56,10 +56,58 @@ struct Solution {}
 
 // @lc code=start
 impl Solution {
-    pub fn maximal_rectangle(matrix: Vec<Vec<char>>) -> i32 {}
+    pub fn maximal_rectangle(matrix: Vec<Vec<char>>) -> i32 {
+        let mut max_area = 0;
+        let mut heights: Vec<i32> = vec![0; matrix[0].len()];
+
+        for i in 0..matrix.len() {
+            for j in 0..matrix[i].len() {
+                heights[j] = if matrix[i][j] == '0' {
+                    0
+                } else {
+                    heights[j] + 1
+                };
+            }
+
+            max_area = i32::max(max_area, Self::largest_rectangle_area(&heights));
+        }
+
+        max_area
+    }
+
+    fn largest_rectangle_area(heights: &Vec<i32>) -> i32 {
+        let mut stack: Vec<i32> = vec![];
+        let mut max_area = 0;
+
+        for i in 0..heights.len() {
+            while !stack.is_empty() && heights[*stack.last().unwrap() as usize] > heights[i] {
+                let peek_height = heights[stack.pop().unwrap() as usize];
+                let calculated_max_width = i as i32 - *stack.last().unwrap_or(&-1) - 1;
+                max_area = i32::max(max_area, calculated_max_width * peek_height);
+            }
+
+            stack.push(i as i32);
+        }
+
+        while !stack.is_empty() {
+            let peek_height = heights[stack.pop().unwrap() as usize];
+            let calculated_max_width = heights.len() as i32 - *stack.last().unwrap_or(&-1) - 1;
+            max_area = i32::max(max_area, calculated_max_width * peek_height);
+        }
+
+        max_area
+    }
 }
 // @lc code=end
 
 fn main() {
-    println!("Hello, world!");
+    assert_eq!(
+        Solution::maximal_rectangle(vec![
+            vec!['1', '0', '1', '0', '0'],
+            vec!['1', '0', '1', '1', '1'],
+            vec!['1', '1', '1', '1', '1'],
+            vec!['1', '0', '0', '1', '0']
+        ]),
+        6
+    );
 }
