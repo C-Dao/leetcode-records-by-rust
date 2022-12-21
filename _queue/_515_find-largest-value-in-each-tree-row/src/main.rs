@@ -78,7 +78,7 @@ impl Solution {
         if root.is_some() {
             queue_1.push_back(root.unwrap());
         }
-
+        
         while let Some(ref node) = queue_1.front() {
             max_value = i32::max(max_value, node.borrow().val);
 
