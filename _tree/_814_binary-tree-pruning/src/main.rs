@@ -78,7 +78,7 @@ impl TreeNode {
 use std::cell::RefCell;
 use std::rc::Rc;
 impl Solution {
-    /** recursion */
+    /** recursion , pass-order traversal */
     pub fn prune_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<TreeNode>>> {
         if root.is_none() {
             return None;
@@ -100,7 +100,7 @@ impl Solution {
         return root;
     }
 
-    /** iteraction */
+    /** iteraction, pass-order traversal */
     pub fn prune_tree_iteraction(
         root: Option<Rc<RefCell<TreeNode>>>,
     ) -> Option<Rc<RefCell<TreeNode>>> {
