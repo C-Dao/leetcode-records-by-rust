@@ -68,6 +68,41 @@ impl From<TokenStream> for TreeNode {
     fn from(stream: TokenStream) -> Self {
         let mut queue = VecDeque::new();
         let mut tree_root = None;
+        let mut null_count = 0;
+
+        let mut append_node = |node: Option<Rc<RefCell<TreeNode>>>| match node {
+            Some(rc_node) => {
+                if tree_root.is_none() {
+                    tree_root = Some(rc_node.clone());
+                    queue.push_back(rc_node);
+                } else {
+                    let parent = queue.front().unwrap().clone();
+                    if parent.borrow().left.is_none() && (null_count == 0) {
+                        queue.push_back(rc_node.clone());
+                        parent.borrow_mut().left = Some(rc_node);
+                    } else if parent.borrow().right.is_none() && (null_count & 2 == 0) {
+                        queue.push_back(rc_node.clone());
+                        parent.borrow_mut().right = Some(rc_node);
+                        queue.pop_front();
+                        null_count = 0;
+                    }
+                }
+            }
+            None => {
+                null_count += 1;
+                let parent = queue.front().unwrap().clone();
+                if parent.borrow().left.is_none() && null_count == 2 {
+                    queue.pop_front();
+                    null_count = 0;
+                } else if parent.borrow().left.is_some()
+                    && parent.borrow().right.is_none()
+                    && null_count == 1
+                {
+                    queue.pop_front();
+                    null_count = 0;
+                }
+            }
+        };
 
         for token in stream.into_iter() {
             match token {
@@ -75,20 +110,11 @@ impl From<TokenStream> for TreeNode {
                 TokenTree::Literal(literal) => {
                     let val = literal.to_string().parse().unwrap();
                     let node = Some(Rc::new(RefCell::new(TreeNode::new(val))));
-
-                    if tree_root.is_none() {
-                        tree_root = node;
-                        queue.push_back(tree_root.as_ref().unwrap().clone());
-                    } else {
-                        let parent = queue.front().unwrap().clone();
-                        if parent.borrow().left.is_none() {
-                            queue.push_back(node.as_ref().unwrap().clone());
-                            parent.borrow_mut().left = node;
-                        } else if parent.borrow().right.is_none() {
-                            queue.push_back(node.as_ref().unwrap().clone());
-                            parent.borrow_mut().right = node;
-                            queue.pop_front();
-                        }
+                    append_node(node);
+                }
+                TokenTree::Ident(ident) => {
+                    if ident == "null" {
+                        append_node(None);
                     }
                 }
                 _ => {}
@@ -113,7 +139,7 @@ mod test {
 
     #[test]
     fn test_with_literal_token() {
-        let token_stream = TokenStream::from_str("1,3,2").unwrap();
+        let token_stream = TokenStream::from_str("1,3,2,null,null,null,3").unwrap();
         let binary_tree = self::from(token_stream);
         dbg!(binary_tree);
     }

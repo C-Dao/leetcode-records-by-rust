@@ -8,5 +8,5 @@ fn test_list_macro() {
 
 #[test]
 fn test_tree_macro() {
-    let _tree = binary_tree!([1, 2, 3]);
+    let _tree = binary_tree!([1, null, 3]);
 }

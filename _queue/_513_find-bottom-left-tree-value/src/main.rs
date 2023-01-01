@@ -41,31 +41,16 @@
  *
  */
 
-// Definition for a binary tree node.
-#[derive(Debug, PartialEq, Eq)]
-pub struct TreeNode {
-    pub val: i32,
-    pub left: Option<Rc<RefCell<TreeNode>>>,
-    pub right: Option<Rc<RefCell<TreeNode>>>,
-}
-
-impl TreeNode {
-    #[inline]
-    pub fn new(val: i32) -> Self {
-        TreeNode {
-            val,
-            left: None,
-            right: None,
-        }
-    }
-}
-
 struct Solution {}
-// @lc code=start
 
+use data_structure_marcos::*;
+use data_structures::*;
 use std::cell::RefCell;
-use std::collections::VecDeque;
 use std::rc::Rc;
+
+// @lc code=start
+use std::collections::VecDeque;
+
 impl Solution {
     pub fn find_bottom_left_value(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
         let mut queue_1 = VecDeque::new();
@@ -75,7 +60,7 @@ impl Solution {
         if root.is_some() {
             queue_1.push_back(root.unwrap());
         }
-        
+
         while let Some(ref node) = queue_1.front() {
             if node.borrow().left.is_some() {
                 let node_left_child = node.borrow().left.as_ref().unwrap().clone();
@@ -102,14 +87,7 @@ impl Solution {
 // @lc code=end
 
 fn main() {
-    let mut node_1 = TreeNode::new(2);
-    let node_2 = TreeNode::new(1);
-    let node_3 = TreeNode::new(3);
-
-    node_1.left = Some(Rc::new(RefCell::new(node_2)));
-    node_1.right = Some(Rc::new(RefCell::new(node_3)));
-
-    let root = Some(Rc::new(RefCell::new(node_1)));
+    let root = binary_tree!(1, 2, 3);
 
     assert_eq!(Solution::find_bottom_left_value(root), 1);
 }
