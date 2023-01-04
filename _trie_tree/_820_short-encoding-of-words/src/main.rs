@@ -69,3 +69,7 @@ impl Solution {
 }
 // @lc code=end
 
+
+fn main() {
+    println!("Hello, world!");
+}

@@ -96,3 +96,7 @@ impl MapSum {
  */
 // @lc code=end
 
+
+fn main() {
+    println!("Hello, world!");
+}
