@@ -1,9 +1,8 @@
 [package]
-name = "_215_kth-largest-element-in-an-array"
+name = "_547_number-of-provinces"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rand = "0.6.5"
