@@ -1,17 +1,17 @@
 /*
 * @lc app=leetcode id=1061 lang=rust
 *
-* [547] Number of Provinces
+* [1061] Lexicographically Smallest Equivalent String
 *
 * https://leetcode.com/problems/lexicographically-smallest-equivalent-string/
 *
 * algorithms
 * Medium (77.2%)
-* Likes:    6853
-* Dislikes: 279
+* Likes:    1945
+* Dislikes: 133
 * Total Accepted:    54.8K
 * Total Submissions: 71K
-* Testcase Example:  '[[1,1,0],[1,1,0],[0,0,1]]'
+* Testcase Example:  ''parker'\n'morris'\n'parser''
 *
 * "
 * You are given two strings of the same length s1 and s2 and a string baseStr.
