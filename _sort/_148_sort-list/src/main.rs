@@ -52,26 +52,25 @@
  * 
  */
 
+ use data_structures::*;
+ use data_structure_marcos::*;
+
+ struct Solution{}
+
+
 // @lc code=start
-// Definition for singly-linked list.
-// #[derive(PartialEq, Eq, Clone, Debug)]
-// pub struct ListNode {
-//   pub val: i32,
-//   pub next: Option<Box<ListNode>>
-// }
-// 
-// impl ListNode {
-//   #[inline]
-//   fn new(val: i32) -> Self {
-//     ListNode {
-//       next: None,
-//       val
-//     }
-//   }
-// }
 impl Solution {
     pub fn sort_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-        
+        if head.is_none() || head.unwrap().next.is_none(){
+            return head;
+        }
+
+        let mut head_1 = head;
+        let mut head_2 = Self::split(head);
+    }
+
+    fn split(&mut head: &mut Option<Box<ListNode>>) -> Option<Box<ListNode>>{
+        let (mut slow, mut fast) = 
     }
 }
 // @lc code=end

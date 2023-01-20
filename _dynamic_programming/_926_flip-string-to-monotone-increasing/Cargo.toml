@@ -1,10 +1,8 @@
 [package]
-name = "_148_sort-list"
+name = "_926_flip-string-to-monotone-increasing"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-data_structures = { path = "../../data_structures" }
-data_structure_marcos = { path = "../../data_structure_marcos" }
