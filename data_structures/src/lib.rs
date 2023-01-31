@@ -7,14 +7,6 @@ pub struct TreeNode {
     pub right: Option<Rc<RefCell<TreeNode>>>,
 }
 
-impl ListNode {
-    pub fn new(val: i32) -> Self {
-        Self {
-            val: val,
-            next: None,
-        }
-    }
-}
 
 impl TreeNode {
     pub fn new(val: i32) -> Self {
@@ -30,6 +22,34 @@ impl TreeNode {
 pub struct ListNode {
     pub val: i32,
     pub next: Option<Rc<RefCell<ListNode>>>,
+}
+
+
+impl ListNode {
+    pub fn new(val: i32) -> Self {
+        Self {
+            val: val,
+            next: None,
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct BoxListNode {
+    pub val: i32,
+    pub next: Option<Box<BoxListNode>>,
+}
+
+
+
+
+impl BoxListNode {
+    pub fn new(val: i32) -> Self {
+        Self {
+            val: val,
+            next: None,
+        }
+    }
 }
 
 #[derive(Default)]
