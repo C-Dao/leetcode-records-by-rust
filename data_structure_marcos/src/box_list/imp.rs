@@ -8,7 +8,6 @@ pub struct ListNode {
 }
 
 pub fn from(input: TokenStream) -> TokenStream {
-    println!("{:?}",transform_input_token_stream(input.clone()).as_str());
     TokenStream::from_str(transform_input_token_stream(input).as_str()).unwrap()
 }
 
@@ -64,7 +63,6 @@ impl From<TokenStream> for ListNode {
         }
 
         let next = dummy.unwrap().next.take();
-
 
         *next.unwrap()
     }

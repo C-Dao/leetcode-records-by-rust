@@ -51,10 +51,35 @@ struct Solution {}
 
 // @lc code=start
 impl Solution {
-    pub fn combine(n: i32, k: i32) -> Vec<Vec<i32>> {}
+    pub fn combine(n: i32, k: i32) -> Vec<Vec<i32>> {
+        let mut ans = vec![];
+
+        Self::dfs(1, n, k, &mut vec![], &mut ans);
+
+        ans
+    }
+
+    fn dfs(i: i32, n: i32, k: i32, cur_vec: &mut Vec<i32>, ans: &mut Vec<Vec<i32>>) {
+        if cur_vec.len() == k as usize {
+            ans.push(cur_vec.clone());
+            return;
+        };
+
+        if i > n {
+            return;
+        };
+
+        cur_vec.push(i);
+        Self::dfs(i + 1, n, k, cur_vec, ans);
+        cur_vec.pop();
+        Self::dfs(i + 1, n, k, cur_vec, ans);
+    }
 }
 // @lc code=end
 
 fn main() {
-    println!("Hello, world!");
+    assert_eq!(
+        Solution::combine(4, 2),
+        [[1, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 4]]
+    );
 }
