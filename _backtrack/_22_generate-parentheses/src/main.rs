@@ -15,33 +15,58 @@
  *
  * Given n pairs of parentheses, write a function to generate all combinations
  * of well-formed parentheses.
- * 
- * 
+ *
+ *
  * Example 1:
  * Input: n = 3
  * Output: ["((()))","(()())","(())()","()(())","()()()"]
  * Example 2:
  * Input: n = 1
  * Output: ["()"]
- * 
- * 
+ *
+ *
  * Constraints:
- * 
- * 
+ *
+ *
  * 1 <= n <= 8
- * 
- * 
+ *
+ *
  */
+
+struct Solution {}
 
 // @lc code=start
 impl Solution {
     pub fn generate_parenthesis(n: i32) -> Vec<String> {
-        
+        let mut ans = vec![];
+        Self::dfs(n, n, &mut vec![], &mut ans);
+        ans
+    }
+
+    fn dfs(left: i32, right: i32, cur_set: &mut Vec<u8>, ans: &mut Vec<String>) {
+        if left == 0 && right == 0 {
+            ans.push(String::from_utf8(cur_set.clone()).unwrap());
+            return;
+        };
+
+        if left > 0 {
+            cur_set.push('(' as u8);
+            Self::dfs(left - 1, right, cur_set, ans);
+            cur_set.pop();
+        }
+
+        if left < right {
+            cur_set.push(')' as u8);
+            Self::dfs(left, right - 1, cur_set, ans);
+            cur_set.pop();
+        }
     }
 }
 // @lc code=end
 
-
 fn main() {
-    println!("Hello, world!");
+    assert_eq!(
+        Solution::generate_parenthesis(3),
+        ["((()))", "(()())", "(())()", "()(())", "()()()"]
+    );
 }
