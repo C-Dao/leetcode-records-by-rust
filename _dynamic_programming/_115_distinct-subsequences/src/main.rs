@@ -60,29 +60,32 @@ struct Solution {}
 // @lc code=start
 impl Solution {
     pub fn num_distinct(s: String, t: String) -> i32 {
-        let (s_len, t_len, s_bytes, t_bytes) = (s.len(), t.len(), s.as_bytes(), t.as_bytes());
+        let (s_bytes, t_bytes) = (s.as_bytes(), t.as_bytes());
 
-        if s_len < t_len {
+        if s.len() < t.len() {
             return 0;
         };
 
-        let mut dp = vec![vec![0; t_len + 1]; s_len + 1];
+        let mut dp = vec![vec![0; t.len() + 1]; s.len() + 1];
 
-        for i in 0..=s_len {
-            dp[i][t_len] = 1;
-        }
+        dp[0][0] = 1;
 
-        for i in (0..s_len).rev() {
-            for j in (0..t_len).rev() {
-                dp[i][j] = if s_bytes[i] != t_bytes[j] {
-                    dp[i + 1][j]
+        for i in 0..s.len() {
+            dp[i + 1][0] = 1;
+
+            for j in 0..t.len() {
+                if j > i {
+                    break;
+                }
+                if s_bytes[i] == t_bytes[j] {
+                    dp[i + 1][j + 1] = dp[i][j] + dp[i][j + 1]
                 } else {
-                    dp[i + 1][j + 1] + dp[i + 1][j]
+                    dp[i + 1][j + 1] = dp[i][j + 1]
                 }
             }
         }
 
-        dp[0][0]
+        dp[s.len()][t.len()]
     }
 }
 // @lc code=end
