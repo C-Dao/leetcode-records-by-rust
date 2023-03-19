@@ -60,23 +60,33 @@ struct Solution {}
 
 // @lc code=start
 impl Solution {
-    pub fn minimum_total(mut triangle: Vec<Vec<i32>>) -> i32 {
-        Self::helper(0, 0, &mut triangle)
+    pub fn minimum_total_recursion(mut triangle: Vec<Vec<i32>>) -> i32 {
+        let mut minimum_total_cache = vec![];
+        Self::helper(0, 0, &mut minimum_total_cache, &mut triangle)
     }
 
-    fn helper(i: usize, j: usize, triangle: &mut Vec<Vec<i32>>) -> i32 {
+    fn helper(
+        i: usize,
+        j: usize,
+        minimum_total_cache: &mut Vec<Vec<bool>>,
+        triangle: &mut Vec<Vec<i32>>,
+    ) -> i32 {
         let m = triangle.len();
         let n = triangle[i].len();
+
+        if minimum_total_cache.len() < i + 1 {
+            minimum_total_cache.push(vec![false; n])
+        };
+
         if i < m && j < n {
-            if i == m - 1 {
-                triangle[i][j]
-            } else {
+            if i < m - 1 && minimum_total_cache[i][j] == false {
                 triangle[i][j] += i32::min(
-                    Self::helper(i + 1, j, triangle),
-                    Self::helper(i + 1, j + 1, triangle),
+                    Self::helper(i + 1, j, minimum_total_cache, triangle),
+                    Self::helper(i + 1, j + 1, minimum_total_cache, triangle),
                 );
-                triangle[i][j]
+                minimum_total_cache[i][j] = true;
             }
+            triangle[i][j]
         } else {
             0
         }
@@ -106,7 +116,7 @@ impl Solution {
         min
     }
 
-    pub fn minimum_total_iteraction_2(mut triangle: Vec<Vec<i32>>) -> i32 {
+    pub fn minimum_total(mut triangle: Vec<Vec<i32>>) -> i32 {
         let m = triangle.len();
 
         for i in (0..m - 1).rev() {
@@ -126,12 +136,42 @@ fn main() {
         Solution::minimum_total(vec![vec![2], vec![3, 4], vec![6, 5, 7], vec![4, 1, 8, 3]]),
         11
     );
-     assert_eq!(
-        Solution::minimum_total_iteraction(vec![vec![2], vec![3, 4], vec![6, 5, 7], vec![4, 1, 8, 3]]),
+
+    assert_eq!(
+        Solution::minimum_total(vec![
+            vec![-7],
+            vec![-2, 1],
+            vec![-5, -5, 9],
+            vec![-4, -5, 4, 4],
+            vec![-6, -6, 2, -1, -5],
+            vec![3, 7, 8, -3, 7, -9],
+            vec![-9, -1, -9, 6, 9, 0, 7],
+            vec![-7, 0, -6, -8, 7, 1, -4, 9],
+            vec![-3, 2, -6, -9, -7, -6, -9, 4, 0],
+            vec![-8, -6, -3, -9, -2, -6, 7, -5, 0, 7],
+            vec![-9, -1, -2, 4, -2, 4, 4, -1, 2, -5, 5],
+            vec![1, 1, -6, 1, -2, -4, 4, -2, 6, -6, 0, 6],
+            vec![-3, -3, -6, -2, -6, -2, 7, -9, -5, -7, -5, 5, 1]
+        ]),
+        -63
+    );
+
+    assert_eq!(
+        Solution::minimum_total_recursion(vec![
+            vec![2],
+            vec![3, 4],
+            vec![6, 5, 7],
+            vec![4, 1, 8, 3]
+        ]),
         11
     );
-     assert_eq!(
-        Solution::minimum_total_iteraction_2(vec![vec![2], vec![3, 4], vec![6, 5, 7], vec![4, 1, 8, 3]]),
+    assert_eq!(
+        Solution::minimum_total_iteraction(vec![
+            vec![2],
+            vec![3, 4],
+            vec![6, 5, 7],
+            vec![4, 1, 8, 3]
+        ]),
         11
     );
 }
