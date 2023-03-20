@@ -60,10 +60,31 @@ struct Solution {}
 
 // @lc code=start
 impl Solution {
-    pub fn coin_change(coins: Vec<i32>, amount: i32) -> i32 {}
+    pub fn coin_change(coins: Vec<i32>, amount: i32) -> i32 {
+        let target = amount as usize;
+        let mut dp = vec![amount + 1; target + 1];
+
+        dp[0] = 0;
+
+        for i in 1..=target {
+            for j in 0..coins.len() {
+                if coins[j] as usize <= i {
+                    dp[i] = i32::min(dp[i], dp[i - coins[j] as usize] + 1);
+                }
+            }
+        }
+
+        if dp[target] > amount {
+            -1
+        } else {
+            dp[target]
+        }
+    }
 }
 // @lc code=end
 
 fn main() {
-    println!("Hello, world!");
+    assert_eq!(Solution::coin_change(vec![1, 2, 5], 11), 3);
+    assert_eq!(Solution::coin_change(vec![2], 3), -1);
+    assert_eq!(Solution::coin_change(vec![1], 0), 0);
 }

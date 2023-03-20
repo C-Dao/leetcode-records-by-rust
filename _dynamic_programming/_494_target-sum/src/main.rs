@@ -114,9 +114,7 @@ impl Solution {
 
         for i in 0..nums.len() {
             for j in (nums[i] as usize..=target).rev() {
-                if j >= nums[i] as usize {
-                    dp[j] += dp[j - nums[i] as usize];
-                }
+                dp[j] += dp[j - nums[i] as usize];
             }
         }
         dp[target]
@@ -145,5 +143,4 @@ fn main() {
         2
     );
     assert_eq!(Solution::find_target_sum_ways(vec![100], -200), 0);
-
 }

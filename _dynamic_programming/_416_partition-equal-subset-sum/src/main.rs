@@ -135,10 +135,10 @@ impl Solution {
         let mut dp = vec![false; target + 1];
         dp[0] = true;
 
-        for i in 1..=nums.len() {
-            for j in (1..=target).rev() {
-                if !dp[j] && j >= nums[i - 1] as usize {
-                    dp[j] = dp[j - nums[i - 1] as usize];
+        for i in 0..nums.len() {
+            for j in (nums[i] as usize..=target).rev() {
+                if !dp[j] {
+                    dp[j] = dp[j - nums[i] as usize];
                 }
             }
         }
