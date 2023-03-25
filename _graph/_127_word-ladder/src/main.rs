@@ -65,12 +65,75 @@
  *
  */
 
+struct Solution {}
+
 // @lc code=start
+use std::collections::HashSet;
+use std::collections::VecDeque;
+
 impl Solution {
-    pub fn ladder_length(begin_word: String, end_word: String, word_list: Vec<String>) -> i32 {}
+    pub fn ladder_length(begin_word: String, end_word: String, word_list: Vec<String>) -> i32 {
+        let mut queue = VecDeque::new();
+        let mut visited = HashSet::new();
+        let mut words = HashSet::new();
+        let mut len = 1;
+        let characters = (b'a'..=b'z').map(char::from).collect::<Vec<_>>();
+
+        for word in word_list {
+            words.insert(word);
+        }
+
+        if !words.contains(&end_word) {
+            return 0;
+        }
+
+        queue.push_back(begin_word.clone());
+
+        while queue.len() > 0 {
+            let queue_size = queue.len();
+
+            for _ in 0..queue_size {
+                let word = queue.pop_front().unwrap();
+
+                for j in 0..word.len() {
+                    for k in &characters {
+                        let new_word =
+                            (&word[0..j]).to_string() + &(k.to_string()) + &word[j + 1..];
+
+                        if new_word == end_word {
+                            return len + 1;
+                        }
+
+                        if words.contains(&new_word) && !visited.contains(&new_word) {
+                            queue.push_back(new_word.clone());
+                            visited.insert(new_word);
+                        }
+                    }
+                }
+            }
+
+            len += 1;
+        }
+
+        0
+    }
 }
 // @lc code=end
 
 fn main() {
-    println!("Hello, world!");
+    assert_eq!(
+        Solution::ladder_length(
+            format!("hit"),
+            format!("cog"),
+            vec![
+                "hot".to_string(),
+                "dot".to_string(),
+                "dog".to_string(),
+                "lot".to_string(),
+                "log".to_string(),
+                "cog".to_string()
+            ]
+        ),
+        5
+    );
 }
